@@ -1,62 +1,64 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Acerca del Proyecto
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Este es un Proyecto de Prueba como parte del proceso de reclutamiento para la empresa a la que aplico. El mismo consta de la realización de un aplicativo que, a travéz de un CRUD RESTFUL, permita la creación de tareas, actualizacíon, eliminar y cambiar el estado de las mismas. Con un front-end amigable y reactivo al usuario. Se proporció un esquema de como debía ser la parte visual y los requerimientos del mismo.
+Para este proyecto se utiliza la versión de Laravel 8.12 y se complementa con el framework de front-end Livewire 2.12.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Requisitos del sistema:
+- Versión PHP 7.4.5
+- Versión Laravel 8.12
+- composer ^2.0
+- git ^2.0
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Pasos a seguir para su instalación:
+- Asegurarse de que el servidor donde se alojará el proyecto cumpla con los requicitos de las versiones indicadas. 
+- Una vez posicionado dentro del servidor y en la ruta deseada, clonar este proyecto desde su repositorio en gitHub: [https://github.com/ArturoAtencio/prueba-millicom](https://github.com/ArturoAtencio/prueba-millicom). Para esto, ejecute el comando: `git clone git@github.com:ArturoAtencio/prueba-millicom.git`.
+- Una vez clonado el proyecto, acceder a la carpeta del mismo: `cd prueba-millicom`. (o el nombre de carpeta designado cuando se clonó el mismo).
+- Dentro del proyecto, debe ejectuar los siguientes comandos:
+    - **`composer install`** (Para que composer instale las dependencias de la aplicación automaticamente).
+    - **`composer update`** (Para verificar que los paquetes necesarios, estén actualizados).
+    - **`composer dump-autoload`** (Verifica y re-gerena el archivo `autoload.php` en la carpeta vendor).
+- Configurar dentro del servidor la ruta y la ip deseadas (archivo hosts) para hacer visible esta aplicación. En mi caso, yo utilicé **Vagrant**, con el ambiente de desarrollo **Homestead**, una maquina virtual basada en Linux Ubuntu, recomendada por los creadores del framework. En caso de usar xampp u otro similar, configurar el htdocs.
+- Levantar el servidor y probar la aplicación en el browser mediante el url o ip predefinidos.
 
-## Learning Laravel
+### Configuraciones extra:
+- Se debe crear la base de datos a la que apuntará la aplicacion. En la siguiente sección se muestran los pasos a seguir.
+- Luego, se debe configurar el archivo `.env` e indicarle las credenciales correctas que apunten a la base de datos (ip, base de datos, usuario y contraseña).
+- Una vez creada la base de datos, y se deben correr las migraciones de la aplicación para que esta genere las tablas necesarias. Adicional, se insertan registros a las tablas mediante seeders. Comando a seguir: `php artisan migrate --seed`. Con esto se generaran las tablas y los seeders se encargaran de insertar unos pocos datos iniciales, con proposito demostrativo.
+- Ya con esto, hemos terminado la instalación del proyecto.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Configuracion de base de datos:
+- Una vez posicionados sobre el servidor que alojará la base de datos, se deben seguir los siguiente:
+    - **`mysq -u:[su usario] -p[su contraseña (opcional)]`** (Con esto ingresamos a la consola de *MYSQL*).
+    - **`CREATE DATABASE prueba_millicom;`** (Creamos la base de datos con el nombre deseado).
+    - **`show databases;`** (Nos permite revisar todas las bases de datos en el sistema, y confirmamos que se haya creado la nuestra).
+    - **`use prueba_milicom; [O el nombre establecido]`** (Nos posiciona sobre la base de datos creada).
+- A continuación, la creación de los *Store Procedures*:
+    - Primero el de crear tarea:
+    - **`DELIMITER // ;`**
+    - **`Create PROCEDURE SP_insert_task(IN p_title varchar(100), IN p_user_id int, IN p_completed int)`** 
+    - **`BEGIN`**
+    - **`insert into tasks(title, user_id, completed) values(p_title, p_user_id, p_completed);`** 
+    - **`END`**
+    - Segundo el de actualziar tarea:
+    - **`DELIMITER // ;`**
+    - **`Create PROCEDURE SP_update_task(IN p_id int, IN p_title varchar(100), IN p_user_id int, IN p_completed int)`** 
+    - **`BEGIN`**    
+    - **`UPDATE tasks`**
+    - **`SET`**
+    - **`title=p_title, user_id=p_user_id, completed=p_completed WHERE id=p_id;`**
+    - **`END`**
+    - Tercero el de eliminar tarea:
+    - **`DELIMITER // ;`**
+    - **`Create PROCEDURE SP_delete_task(IN p_id int)`**
+    - **`BEGIN `**
+    - **`DELETE from tasks`**
+    - **`WHERE id=p_id;`**
+    - **`END //`**
+- Con estos hemos terminado la creacion de la base de datos y los store procedures requeridos.
+- ***Nota aclaratoria***: En los requerimientos se solicitaban 4 Store Procedures, entre ellos un SP para Actualizar y otro SP para modificar, pero solo se crearon 3 ya que el *`sp_update_task()`* sirve para ambas funcionalidades.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# ¡Muchísimas Gracias!
