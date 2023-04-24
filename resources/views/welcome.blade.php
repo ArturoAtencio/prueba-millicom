@@ -27,6 +27,37 @@
     </head>
     
     <body class="antialiased">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">
+                <img src="https://cdn-icons-png.flaticon.com/512/1157/1157109.png" width="30" height="30" alt="">
+                PruebaTécnica
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-around" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item mx-4">
+                        <a class="nav-link" href="https://www.linkedin.com/in/arturo-atencio-911b49167/"
+                            target="_blank" style="/* color:#0a66c2; */">
+                            <i class="fab fa-linkedin" style="color: #0a66c2;"></i> Linked-In
+                        </a>
+                    </li>
+                    <li class="nav-item mx-5">
+                        <a class="nav-link" href="https://github.com/ArturoAtencio/"
+                             target="_blank" style="/* color:gray */">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </li>
+                    <li class="nav-item mx-5">
+                        <a class="nav-link" href="https://gitlab.com/Ax3"
+                             target="_blank" style="/* color:orangered */">
+                            <i class="fab fa-gitlab" style="color: #ff780a;"></i> Gitlab
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
         <div class="container">
             <div class="my-5">
                 @livewire('tasks')
